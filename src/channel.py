@@ -1,10 +1,7 @@
-import json
-import os
-from dotenv import load_dotenv
-from googleapiclient.discovery import build
 
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
+import json
+from googleapiclient.discovery import build
+from src.implemented import youtube
 
 
 class Channel:
@@ -14,8 +11,7 @@ class Channel:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.channel_id = channel_id
 
-        self.youtube = build('youtube', 'v3', developerKey=API_KEY)
-        self.channel = self.youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
+        self.channel = youtube.channels().list(id=self.channel_id, part='snippet,statistics').execute()
 
         self.title = self.channel["items"][0]["snippet"]["title"]
         self.description = self.channel["items"][0]["snippet"]["description"]
